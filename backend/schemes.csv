@@ -1,0 +1,54 @@
+scheme_name,state,focus_area,crop_type,farmer_category,min_land,max_land,benefit_type,benefit_amount,description,eligibility,application_mode,official_url
+YSR Rythu Bharosa,Andhra Pradesh,Income Support,All,All,0,20,Direct Benefit,13500/year,Annual income support including PM-KISAN share,Registered farmers including tenants,Online,https://ysrrythubharosa.ap.gov.in
+Zero Interest Crop Loans,Andhra Pradesh,Credit Support,All,All,0,25,Loan Subsidy,0% interest,Interest-free crop loans for cultivation,Farmers with crop loans,Bank,https://apagrisnet.gov.in
+e-Crop Booking,Andhra Pradesh,Digital Agriculture,All,All,0,50,Service,,Digital crop survey for insurance and compensation,All farmers,Mobile App,https://ecrop.ap.gov.in
+APCNF,Andhra Pradesh,Natural Farming,All,Small,0,10,Input Subsidy,Variable,Community managed natural farming program,Small and marginal farmers,Online/Offline,https://apcnf.in
+CM Sashakt Kisan Yojana,Arunachal Pradesh,Income Support,All,All,0,20,Direct Benefit,Variable,Financial assistance to farmers,Resident farmers,Offline,https://agricoop.arunachal.gov.in
+Atma Nirbhar Krishi Yojana,Arunachal Pradesh,Capital Subsidy,All,All,0,20,Subsidy,Up to 45%,Subsidy for agriculture equipment,Landholding farmers,Offline,https://agricoop.arunachal.gov.in
+Organic Mission Arunachal,Arunachal Pradesh,Organic Farming,All,Small,0,10,Input Subsidy,Variable,Promotion of organic farming,Organic farmers,Offline,https://agricoop.arunachal.gov.in
+Mukhyamantri Krishi Sa-Sajuli Yojana,Assam,Farm Equipment,All,Small,0,10,Asset Support,5000,Financial support for farm tools,Small farmers,Offline,https://agri-horti.assam.gov.in
+APART,Assam,Value Chain,Tea,All,0,50,Infrastructure,Variable,Value chain development project,FPOs and farmers,Online,https://apart.assam.gov.in
+Small Tea Growers Scheme,Assam,Tea Support,Tea,Small,0,10,Financial Aid,Variable,Support to small tea growers,Tea growers,Offline,https://agri-horti.assam.gov.in
+Bihar Rajya Fasal Sahayata Yojana,Bihar,Crop Loss,All,All,0,20,Compensation,7500/ha,Crop loss compensation,Registered farmers,Online,https://dbtagriculture.bihar.gov.in
+Diesel Anudan Yojana,Bihar,Irrigation,All,Small,0,10,Subsidy,75/litre,Diesel subsidy for irrigation,Small farmers,Offline,https://dbtagriculture.bihar.gov.in
+Krishi Input Anudan,Bihar,Input Support,All,Small,0,10,Input Subsidy,Variable,Input assistance during calamities,Small farmers,Offline,https://dbtagriculture.bihar.gov.in
+Rajiv Gandhi Kisan Nyay Yojana,Chhattisgarh,Price Support,Paddy,All,0,25,Direct Benefit,9000/acre,Price support for paddy farmers,Paddy farmers,Online,https://cgstate.gov.in
+Godhan Nyay Yojana,Chhattisgarh,Rural Livelihood,All,All,0,50,Income Support,2/kg,Purchase of cow dung,Rural households,Offline,https://cgstate.gov.in
+Millet Mission,Chhattisgarh,Nutri Crops,Millets,Small,0,10,Subsidy,Variable,Promotion of millets,Small farmers,Offline,https://cgstate.gov.in
+Krishi Card Scheme,Goa,Farmer Welfare,All,Small,0,10,Financial Aid,5000,Financial card for farmers,Small farmers,Offline,https://goa.gov.in
+Shetkari Adhar Nidhi,Goa,Income Support,All,Small,0,10,Direct Benefit,4000/year,Income assistance,Goa farmers,Offline,https://goa.gov.in
+Krishi Mahotsav,Gujarat,Farmer Awareness,All,All,0,50,Service,,Agriculture training program,All farmers,Offline,https://gujaratindia.gov.in
+Sujalam Sufalam Yojana,Gujarat,Irrigation,All,All,0,50,Infrastructure,,Water conservation,Farmers,Offline,https://gujaratindia.gov.in
+Jyotigram Yojana,Gujarat,Rural Power,All,All,0,50,Electricity,24x7 supply,Separate agri power,All farmers,Offline,https://gujaratindia.gov.in
+Mera Pani Meri Virasat,Haryana,Crop Diversification,All,All,0,50,Incentive,Variable,Promotes crop diversification,Farmers,Online,https://fasal.haryana.gov.in
+Bhavantar Bharpai Yojana,Haryana,Price Support,All,All,0,50,Compensation,Variable,Price difference compensation,Farmers,Online,https://fasal.haryana.gov.in
+e-Kharid,Haryana,Digital Procurement,All,All,0,50,Service,,Online crop procurement,Farmers,Online,https://ekharid.haryana.gov.in
+Natural Farming Khushhal Kisan Yojana,Himachal Pradesh,Natural Farming,All,Small,0,10,Subsidy,Variable,Promotes natural farming,Small farmers,Offline,https://hpagriculture.com
+Horticulture Development Project,Himachal Pradesh,Horticulture,Fruits,All,0,50,Subsidy,Variable,Horticulture infrastructure,Horticulture farmers,Offline,https://hpagriculture.com
+Mukhyamantri Krishi Ashirwad Yojana,Jharkhand,Income Support,All,All,0,20,Direct Benefit,5000/year,Income support,Registered farmers,Online,https://dbt.jharkhand.gov.in
+Birsa Harit Gram Yojana,Jharkhand,Plantation,All,Small,0,10,Subsidy,Variable,Plantation support,Small farmers,Offline,https://jharkhand.gov.in
+Raitha Vidya Nidhi,Karnataka,Education Support,All,All,0,50,Scholarship,Variable,Scholarship for farmers children,Registered farmers,Online,https://raitamitra.karnataka.gov.in
+Krishi Bhagya,Karnataka,Irrigation,All,Small,0,10,Subsidy,Variable,Rainwater harvesting,Dryland farmers,Offline,https://raitamitra.karnataka.gov.in
+Subhiksha Keralam,Kerala,Food Security,Vegetables,All,0,50,Subsidy,Variable,Vegetable self sufficiency,All farmers,Online,https://keralaagriculture.gov.in
+Karshaka Kshemanidhi,Kerala,Pension,All,All,0,50,Pension,Variable,Farmer pension scheme,Registered farmers,Offline,https://keralaagriculture.gov.in
+Mukhyamantri Kisan Kalyan Yojana,Madhya Pradesh,Income Support,All,All,0,50,Direct Benefit,6000/year,Income support,Farmers,Online,https://mpkrishi.mp.gov.in
+Bhavantar Bhugtan Yojana,Madhya Pradesh,Price Support,All,All,0,50,Compensation,Variable,Price difference payment,Farmers,Online,https://mpkrishi.mp.gov.in
+Namo Shetkari Mahasanman Nidhi,Maharashtra,Income Support,All,All,0,50,Direct Benefit,6000/year,Additional income support,Registered farmers,Online,https://mahadbt.maharashtra.gov.in
+KALIA Scheme,Odisha,Income Support,All,Small,0,10,Direct Benefit,Variable,Support to small farmers,Small farmers,Online,https://kalia.odisha.gov.in
+Balaram Scheme,Odisha,Credit Support,All,Small,0,10,Loan Support,Variable,Tenant farmer credit,Tenant farmers,Online,https://kalia.odisha.gov.in
+Paani Bachao Paisa Kamao,Punjab,Water Conservation,All,All,0,50,Incentive,Variable,Groundwater conservation,Electric pump owners,Online,https://pbdp.punjab.gov.in
+Mukhyamantri Krishak Saathi Yojana,Rajasthan,Farmer Welfare,All,All,0,50,Insurance,Variable,Accident insurance,Farmers,Online,https://rajkisan.rajasthan.gov.in
+Sikkim Organic Mission,Sikkim,Organic Farming,All,All,0,50,Input Support,Variable,100 percent organic farming,All farmers,Offline,https://sikkim.gov.in
+All Village Integrated Agriculture Development Programme,Tamil Nadu,Integrated Agriculture,All,All,0,50,Infrastructure,Variable,Village level agriculture development,Farmers,Offline,https://tnagriculture.tn.gov.in
+Tripura Organic Mission,Tripura,Organic Farming,All,All,0,50,Input Subsidy,Variable,Promotion of organic farming,Farmers,Offline,https://tripura.gov.in
+Mukhyamantri Krishak Durghatna Kalyan Yojana,Uttar Pradesh,Insurance,All,All,0,50,Insurance,500000,Accident insurance,Farmers,Online,https://upagripardarshi.gov.in
+Apple Mission,Uttarakhand,Horticulture,Fruits,All,0,50,Subsidy,Variable,Apple cultivation promotion,Horticulture farmers,Offline,https://uk.gov.in
+Bangla Shasya Bima,West Bengal,Crop Insurance,All,All,0,50,Insurance,Variable,Crop insurance,Farmers,Online,https://banglashasyabima.net
+Jal Dharo Jal Bharo,West Bengal,Water Conservation,All,All,0,50,Infrastructure,,Water conservation program,Farmers,Offline,https://wb.gov.in
+Rythu Bandhu,Telangana,Income Support,All,All,0,50,Direct Benefit,10000/year,Agriculture Investment Support Scheme - 5000 per acre per season for input costs,All landholding farmers,Online,https://rythubandhu.telangana.gov.in
+Rythu Bhima,Telangana,Insurance,All,All,0,50,Insurance,500000,Farmers Group Life Insurance providing 5 lakh cover to farmer families,Registered farmers,Online,https://rythubandhu.telangana.gov.in/Default_LIC1.aspx
+Soil Health Card,Telangana,Soil Health,All,All,0,50,Service,,Soil testing and recommendations for balanced fertilizer use,All farmers,Online,https://soilhealth.dac.gov.in
+Rastriya Krishi Vikas Yojana,Telangana,Agricultural Development,All,All,0,50,Subsidy,Variable,State-specific agricultural development focusing on productivity and climate resilience,All farmers,Online,https://horticulture.tg.nic.in/rkvy/rkvy.html
+National Food Security Mission,Telangana,Food Security,All,All,0,50,Subsidy,Variable,Enhances production of rice wheat pulses and oilseeds through improved technologies,All farmers,Online,https://nfsm.telangana.gov.in
+Seed Village Programme,Telangana,Seed Support,All,All,0,50,Subsidy,50-60%,Quality seeds at subsidized rates - 50% for cereals 60% for pulses and oilseeds,All farmers,Online,https://ossds.telangana.gov.in
+Rainfed Area Development,Telangana,Rainfed Farming,All,All,0,50,Subsidy,Variable,Productivity enhancement in rainfed zones through diversified farming and resource conservation,All farmers,Online,https://horticulture.tg.nic.in/rkvy/rkvy.html
