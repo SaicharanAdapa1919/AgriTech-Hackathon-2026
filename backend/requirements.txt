@@ -3,7 +3,6 @@ uvicorn
 pandas
 scikit-learn
 speechrecognition
-pyaudio
 pyttsx3
 gTTS
 pydantic
