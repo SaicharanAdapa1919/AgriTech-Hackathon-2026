@@ -8,7 +8,10 @@ import speech_recognition as sr
 # -------------------------------
 # Backend API URL
 # -------------------------------
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+if hasattr(st, "secrets") and "API_URL" in st.secrets:
+    API_URL = st.secrets["API_URL"]
+API_URL = API_URL.rstrip("/")
 
 st.set_page_config(
     page_title="Farmer Scheme Recommender",
