@@ -4,6 +4,17 @@ from gtts import gTTS
 import tempfile
 import os
 import speech_recognition as sr
+import uuid
+import pandas as pd
+
+# Load local chatbot helper if available
+try:
+    from voice_chatbot import VoiceChatbot
+except ImportError:
+    try:
+        from backend.voice_chatbot import VoiceChatbot
+    except ImportError:
+        VoiceChatbot = None
 
 # -------------------------------
 # Backend API URL
@@ -333,56 +344,235 @@ L = LANG_DATA[language]
 st.markdown(f"## 🌾 {L['title']}")
 st.markdown(f"**{L['subtitle']}**")
 
+
+# ======================================================
+# EMBEDDED LOCAL ENGINE (Streamlit Cloud Self-Contained)
+# ======================================================
+@st.cache_data
+def load_schemes_data():
+    paths = [
+        os.path.join(os.path.dirname(__file__), "schemes.csv"),
+        os.path.join(os.path.dirname(__file__), "..", "backend", "schemes.csv"),
+        os.path.join(os.path.dirname(__file__), "backend", "schemes.csv"),
+        "schemes.csv"
+    ]
+    for p in paths:
+        if os.path.exists(p):
+            try:
+                df = pd.read_csv(p)
+                df.fillna("NA", inplace=True)
+                return df
+            except Exception:
+                pass
+    return None
+
+def local_recommend_schemes(state, crop, land, category):
+    df_raw = load_schemes_data()
+    if df_raw is None or df_raw.empty:
+        return []
+    
+    state_str = str(state).strip().lower()
+    crop_str = str(crop).strip().lower()
+    category_str = str(category).strip().lower()
+    
+    try:
+        land_val = float(land)
+    except:
+        land_val = 0.0
+
+    df = df_raw[df_raw["state"].str.lower() == state_str]
+    if df.empty:
+        return []
+
+    results = []
+    for _, row in df.iterrows():
+        score = 0
+        row_crop = str(row["crop_type"]).lower()
+        if row_crop == "all" or row_crop == crop_str:
+            score += 2
+
+        row_cat = str(row["farmer_category"]).lower()
+        if row_cat == "all" or row_cat == category_str:
+            score += 2
+
+        try:
+            min_l = float(row["min_land"])
+            max_l = float(row["max_land"])
+            if min_l <= land_val <= max_l:
+                score += 2
+        except:
+            pass
+
+        if score > 0:
+            results.append({
+                "scheme_name": row.get("scheme_name", ""),
+                "focus_area": row.get("focus_area", ""),
+                "benefit_type": row.get("benefit_type", ""),
+                "benefit_amount": row.get("benefit_amount", ""),
+                "description": row.get("description", ""),
+                "eligibility": row.get("eligibility", ""),
+                "application_mode": row.get("application_mode", ""),
+                "official_url": row.get("official_url", ""),
+                "score": score
+            })
+
+    return sorted(results, key=lambda x: x["score"], reverse=True)
+
+if "local_sessions" not in st.session_state:
+    st.session_state.local_sessions = {}
+
+def local_start_session():
+    bot = VoiceChatbot() if VoiceChatbot else None
+    sess_id = str(uuid.uuid4())
+    welcome = bot.get_prompt('welcome', 'English') if bot else "Welcome to Farmer Scheme Assistant!"
+    st.session_state.local_sessions[sess_id] = {
+        'chatbot': bot,
+        'state': 'language',
+        'language': 'English',
+        'collected_data': {'state': None, 'crop': None, 'land': None, 'category': None}
+    }
+    return {
+        'session_id': sess_id,
+        'current_state': 'language',
+        'message': welcome
+    }
+
+def local_process_input(sess_id, text_input):
+    sess = st.session_state.local_sessions.get(sess_id)
+    if not sess or not sess.get('chatbot'):
+        return None
+    bot = sess['chatbot']
+    cur_state = sess['state']
+    data = sess['collected_data']
+    res = {'current_state': cur_state, 'message': '', 'collected_data': data}
+
+    if cur_state == 'language':
+        detected = bot.detect_language(text_input)
+        if detected in ['English', 'Hindi', 'Telugu']:
+            sess['language'] = detected
+            bot.set_language(detected)
+            sess['state'] = 'state'
+            res['current_state'] = 'state'
+            res['message'] = bot.get_prompt('choose_state', detected)
+        else:
+            res['message'] = bot.get_prompt('welcome', 'English')
+    elif cur_state == 'state':
+        s_val = bot.parse_state(text_input, sess['language'])
+        if s_val:
+            data['state'] = s_val
+            sess['state'] = 'crop'
+            res['current_state'] = 'crop'
+            res['message'] = bot.get_prompt('choose_crop', sess['language'])
+        else:
+            res['message'] = bot.get_prompt('choose_state', sess['language']) + " " + bot.get_prompt('error', sess['language'])
+    elif cur_state == 'crop':
+        c_val = bot.parse_crop(text_input, sess['language'])
+        if c_val:
+            data['crop'] = c_val
+            sess['state'] = 'land'
+            res['current_state'] = 'land'
+            res['message'] = bot.get_prompt('choose_land', sess['language'])
+        else:
+            res['message'] = bot.get_prompt('choose_crop', sess['language']) + " " + bot.get_prompt('error', sess['language'])
+    elif cur_state == 'land':
+        l_val = bot.parse_land(text_input)
+        if l_val is not None:
+            data['land'] = l_val
+            sess['state'] = 'category'
+            res['current_state'] = 'category'
+            res['message'] = bot.get_prompt('choose_category', sess['language'])
+        else:
+            res['message'] = bot.get_prompt('choose_land', sess['language']) + " " + bot.get_prompt('error', sess['language'])
+    elif cur_state == 'category':
+        cat_val = bot.parse_category(text_input, sess['language'])
+        if cat_val:
+            data['category'] = cat_val
+            sess['state'] = 'complete'
+            res['current_state'] = 'complete'
+            res['message'] = bot.get_prompt('processing', sess['language'])
+        else:
+            res['message'] = bot.get_prompt('choose_category', sess['language']) + " " + bot.get_prompt('error', sess['language'])
+
+    res['collected_data'] = data
+    return res
+
+
 # ======================================================
 # CHATBOT FUNCTIONS
 # ======================================================
 
 def start_chatbot_session():
+    data = None
     try:
-        response = requests.post(f"{API_URL}/chatbot/start")
+        response = requests.post(f"{API_URL}/chatbot/start", timeout=2)
         if response.status_code == 200:
             data = response.json()
-            st.session_state.chatbot_session_id = data['session_id']
-            st.session_state.current_step = data['current_state']
-            st.session_state.current_message = data['message']
-            st.session_state.chatbot_started = True
-            st.session_state.last_spoken_message = ""
-            # Set the chatbot language based on user's language selection
-            st.session_state.chatbot_language = language
-            st.session_state.last_audio_key = ""
-            return True
-    except Exception as e:
-        st.error(f"Failed to start chatbot: {e}")
+    except Exception:
+        data = None
+
+    # Fallback to embedded local session
+    if not data:
+        data = local_start_session()
+
+    if data:
+        st.session_state.chatbot_session_id = data['session_id']
+        st.session_state.current_step = data['current_state']
+        st.session_state.current_message = data['message']
+        st.session_state.chatbot_started = True
+        st.session_state.last_spoken_message = ""
+        st.session_state.chatbot_language = language
+        st.session_state.last_audio_key = ""
+        return True
     return False
 
 
 def process_chatbot_input(user_input):
+    data = None
     try:
         payload = {
             "session_id": st.session_state.chatbot_session_id,
             "text_input": user_input
         }
-        response = requests.post(f"{API_URL}/chatbot/process", json=payload)
+        response = requests.post(f"{API_URL}/chatbot/process", json=payload, timeout=2)
         if response.status_code == 200:
             data = response.json()
-            st.session_state.current_step = data['current_state']
-            st.session_state.current_message = data['message']
-            
-            collected = data.get('collected_data', {})
-            if collected.get('state'):
-                st.session_state.form_state = collected['state']
-            if collected.get('crop'):
-                st.session_state.form_crop = collected['crop']
-            if collected.get('land'):
-                st.session_state.form_land = collected['land']
-            if collected.get('category'):
-                st.session_state.form_category = collected['category']
-            
-            return data
-    except Exception as e:
-        st.error(f"Failed to process input: {e}")
+    except Exception:
+        data = None
+
+    if not data:
+        data = local_process_input(st.session_state.chatbot_session_id, user_input)
+
+    if data:
+        st.session_state.current_step = data['current_state']
+        st.session_state.current_message = data['message']
+        
+        collected = data.get('collected_data', {})
+        if collected.get('state'):
+            st.session_state.form_state = collected['state']
+        if collected.get('crop'):
+            st.session_state.form_crop = collected['crop']
+        if collected.get('land'):
+            st.session_state.form_land = collected['land']
+        if collected.get('category'):
+            st.session_state.form_category = collected['category']
+        return data
     return None
 
+
+
+def fetch_scheme_recommendations(state, crop, land, category):
+    data = None
+    try:
+        payload = {"state": state, "crop": crop, "land": land, "category": category}
+        res = requests.post(f"{API_URL}/recommend", json=payload, timeout=2)
+        if res.status_code == 200:
+            data = res.json()
+    except Exception:
+        data = None
+
+    if not data or not isinstance(data, list):
+        data = local_recommend_schemes(state, crop, land, category)
+    return data
 
 # ======================================================
 # CHATBOT SECTION
@@ -613,12 +803,9 @@ if st.session_state.current_step == 'complete':
 
         try:
             with st.spinner("Fetching your personalized schemes..."):
-                response = requests.post(f"{API_URL}/recommend", json=payload)
+                data = fetch_scheme_recommendations(current_state, current_crop, current_land, current_category)
 
-            if response.status_code == 200:
-                data = response.json()
-                
-                if isinstance(data, list) and len(data) > 0:
+            if data and isinstance(data, list) and len(data) > 0:
                     st.success(f"🎉 Found {len(data)} eligible schemes!")
                     
                     for scheme in data:
@@ -634,10 +821,8 @@ if st.session_state.current_step == 'complete':
                         <a href="{scheme['official_url']}" target="_blank" style="display:inline-block;background:#1976d2;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:500;">🔗 Visit Official Website</a>
                         </div>
                         """, unsafe_allow_html=True)
-                else:
-                    st.warning("No schemes found for your criteria")
             else:
-                st.error(f"❌ Error: {response.text}")
+                    st.warning("No schemes found for your criteria")
 
         except Exception as e:
             st.error(f"❌ Connection error: {e}")
@@ -655,12 +840,9 @@ elif st.button("🔍 Get Recommendations", type="primary", use_container_width=T
 
         try:
             with st.spinner("Fetching your personalized schemes..."):
-                response = requests.post(f"{API_URL}/recommend", json=payload)
+                data = fetch_scheme_recommendations(current_state, current_crop, current_land, current_category)
 
-            if response.status_code == 200:
-                data = response.json()
-                
-                if isinstance(data, list) and len(data) > 0:
+            if data and isinstance(data, list) and len(data) > 0:
                     st.success(f"🎉 Found {len(data)} eligible schemes!")
                     
                     for scheme in data:
@@ -676,10 +858,8 @@ elif st.button("🔍 Get Recommendations", type="primary", use_container_width=T
                         <a href="{scheme['official_url']}" target="_blank" style="display:inline-block;background:#1976d2;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:500;">🔗 Visit Official Website</a>
                         </div>
                         """, unsafe_allow_html=True)
-                else:
-                    st.warning("No schemes found")
             else:
-                st.error(f"❌ Error: {response.text}")
+                    st.warning("No schemes found")
 
         except Exception as e:
             st.error(f"❌ Connection error: {e}")

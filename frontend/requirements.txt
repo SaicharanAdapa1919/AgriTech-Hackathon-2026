@@ -2,4 +2,7 @@ streamlit
 requests
 gTTS
 speechrecognition
-
+pandas
+scikit-learn
+pydantic
+numpy
