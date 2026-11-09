@@ -6,11 +6,17 @@ import os
 import speech_recognition as sr
 
 # -------------------------------
-# Backend API URL (Production Railway Default)
+# Backend API URL
 # -------------------------------
-API_URL = os.getenv("API_URL", "https://agritech-hackathon-2026-production.up.railway.app")
-if hasattr(st, "secrets") and "API_URL" in st.secrets:
-    API_URL = st.secrets["API_URL"]
+# Prefer Streamlit secrets or environment variable; fallback gracefully
+default_api_url = os.getenv("API_URL", "https://agritech-hackathon-2026-production.up.railway.app")
+try:
+    if hasattr(st, "secrets") and "API_URL" in st.secrets:
+        API_URL = st.secrets["API_URL"]
+    else:
+        API_URL = default_api_url
+except Exception:
+    API_URL = default_api_url
 API_URL = API_URL.rstrip("/")
 
 st.set_page_config(
